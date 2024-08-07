@@ -40,7 +40,7 @@ df = spark \
      .format('csv') \
      .option("header",'true') \
      .option("inferSchema",'true')\
-     .load('/Volumes/test/s3_test/health-care/allergies.csv')
+     .load('s3://varun-spark-bucket/allergies.csv')
 """
      The show() function in Spark DataFrame is used to display the contents of the DataFrame in a tabular format.
      Spark will display a certain number of rows from the DataFrame, usually the first 20 rows by default
@@ -79,7 +79,7 @@ df = spark \
      .read \
      .format('csv') \
      .options(**options) \
-     .load('s3://vidya-sankalp-datasets/health-care/2024_05_08T04_08_53Z/claims/')
+     .load('s3://varun-spark-bucket/claims.csv')
 
 """
 display() function is a powerful tool for visualizing and exploring data. It's particularly useful for working with Spark DataFrames in a Databricks notebook environment.
@@ -100,7 +100,8 @@ Data Profiling
     Data Profiling Insights: Databricks provides additional insights and recommendations based on the data profiling results, highlighting potential issues or areas for further investigation. For example, it may flag columns with a high percentage of missing values or suggest data transformations to improve data quality.
 Note: display is a databricks related function doesn't work in all the spark environments
 """
-display(df)
+# display(df)
+df.printSchema()
 
 # COMMAND ----------
 
@@ -151,13 +152,24 @@ schema = StructType([
     StructField('SUPERVISINGPROVIDERID', StringType(), True)
 ])
 
+# df = spark \
+#      .read \
+#      .format('csv') \
+#      .option("header",'true') \
+#      .schema(schema) \
+#      .load('s3://varun-spark-bucket/claims.csv')
+# display(df)
+#here it will only create 1 job as we are using schema and we are saying the structfieled like data tyep and all 
+#this is imp interview que for optimizing jobs 
 df = spark \
      .read \
      .format('csv') \
-     .option("header",'true') \
-     .schema(schema) \
-     .load('s3://vidya-sankalp-datasets/health-care/2024_05_08T04_08_53Z/claims/')
+     .option("inferSchema",'true')\
+     .load('s3://varun-spark-bucket/claims.csv')
 display(df)
+
+
+#here we are using inferschema in this case here it will create 3 jobs as while we run it will look for what type of columns and wheather it will null or not so it require more jobs to run
 
 # COMMAND ----------
 

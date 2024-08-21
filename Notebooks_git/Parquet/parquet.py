@@ -54,11 +54,11 @@ def write_partitions_data(df, database_name, table_name,write_mode, partition_co
 # COMMAND ----------
 
 # Define the list of folder prefixes to process
-folder_prefixes = ["allergies", "claims_transcations", "claims", "paitents", "payers"]
+folder_prefixes = ["allergies.csv", "claims_transactions.csv", "claims.csv", "patients.csv", "payers.csv"]
 
 # Specify the source and destination S3 bucket names
-source_bucket_name = 'prudhvi-08052024-test'
-destination_bucket_name = 'prudhvi-08052024-test'
+source_bucket_name = 'varun-databricks-s3-bucket'
+destination_bucket_name = 'varun-databricks-s3-bucket'
 
 # Define the catalog and schema names for the database
 catalog_name = 'lakehouse_dev'
@@ -77,15 +77,15 @@ options = {
 
 # COMMAND ----------
 
-table_name = f"{catalog_name}.{schema_name}.claims_transcations"
+table_name = f"{catalog_name}.{schema_name}.claims_transactions.csv"
 
 # COMMAND ----------
 
-read_path = f"s3://{source_bucket_name}/dataset/claims_transcations"
+read_path = f"s3://{source_bucket_name}/dataset/claims_transactions.csv"
 # Read data from the source bucket for the current folder prefix
 df = read_data_from_file(spark, source_bucket_name, 'csv', options,read_path)
 # Write the DataFrame to the destination bucket and register it as a table in the database
-write_path = f"s3://{destination_bucket_name}/dataset/parition_by/parquet/claims_transcations/"
+write_path = f"s3://{destination_bucket_name}/dataset/parition_by/parquet/claims_transactions/"
 
 write_partitions_data(df, database_name, 'claims_transactions_partition' ,write_mode, ['PROCEDURECODE'],write_path)
 
@@ -104,7 +104,7 @@ for folder_prefix in folder_prefixes:
 # COMMAND ----------
 
 sql_query = f"""
-    SELECT * FROM {database_name}.claims_transcations
+    SELECT * FROM {database_name}.claims_transactions
 """
 
 df = read_data_from_sql(spark, sql_query)

@@ -95,7 +95,7 @@ display(spark.read.parquet("s3://prudhvi-08052024-test/json/part-00000-26c6dee6-
 
 # COMMAND ----------
 
-# MAGIC %run /Workspace/Repos/abcprudhvi59@gmail.com/CodeBaseNew/Notebooks/common_utils
+# MAGIC %run /Workspace/Repos/varunteja00098@gmail.com/Code_Base/Notebooks_git/common_utils
 
 # COMMAND ----------
 
